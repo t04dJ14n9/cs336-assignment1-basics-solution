@@ -1,13 +1,16 @@
 import torch
 import numpy as np
 
-def get_lr_cosine_schedule(t, lr_max, lr_min, warmup_iters, total_iters, **kwargs):
+def getmlr_cosine_schedule(t, lr_max, lr_min, warmup_iters, total_iters, **kwargs):
     if t < warmup_iters:
         return lr_max * t / warmup_iters
     elif t < total_iters:
         return lr_min + 0.5 * (lr_max - lr_min) * (1 + np.cos((t - warmup_iters) / (total_iters - warmup_iters) * 3.141592653589793))
     else:
         return lr_min
+
+# Alias for backwards compatibility
+get_lr_cosine_schedule = getmlr_cosine_schedule
 
 
 class AdamW(torch.optim.Optimizer):
